@@ -1,3 +1,10 @@
+# Ignore files without file extension
+*
+!*/
+!*.*
+
+*.o
+
 .DS_Store
 .idea
 *.vcd

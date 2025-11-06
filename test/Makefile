@@ -1,12 +1,40 @@
 # Makefile
 # See https://docs.cocotb.org/en/stable/quickstart.html for more info
 
+# List your source files here:
+SOURCE_FILES = project.vhdl
+
+# Toplevel name of your VHDL project
+COCOTB_TOPLEVEL = tt_um_example
+
+# Common
+WAVES ?= 1
+SRC_DIR = $(PWD)/../src
+
+ifeq ($(LIU), yes)
+$(info ************ Running simulation on LiU computer ************)
+ifeq ($(GATES),yes)
+$(warning ************ Gate level simulation selected but currently not set up on LiU computers ************)
+endif
+
+TOPLEVEL_LANG = vhdl
+SIM = ghdl
+VHDL_SOURCES = $(addprefix $(SRC_DIR)/,$(SOURCE_FILES))
+SIM_BUILD = sim_build
+SIM_ARGS += --vcd=$(SIM_BUILD)/tb.vcd
+EXTRA_ARGS += --workdir=$(SIM_BUILD) --work=work
+
+else
+
 # defaults
 SIM ?= icarus
 FST ?= -fst # Use more efficient FST format
 TOPLEVEL_LANG ?= verilog
-SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = generated/project.v
+
+# Change file extension from .vhdl to .v
+PROJECT_TARGETS_V = $(SOURCE_FILES:.vhdl=.v)
+# Prepend path for generated files
+PROJECT_SOURCES = $(addprefix generated/, $(PROJECT_TARGETS_V))
 
 ifneq ($(GATES),yes)
 
@@ -37,6 +65,8 @@ COMPILE_ARGS 		+= -I$(SRC_DIR)
 # Include the testbench sources:
 VERILOG_SOURCES += $(PWD)/tb.v
 TOPLEVEL = tb
+
+endif # !LIU
 
 # List test modules to run, separated by commas and without the .py suffix:
 COCOTB_TEST_MODULES = test
