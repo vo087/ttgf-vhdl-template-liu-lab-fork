@@ -28,7 +28,7 @@ jobs:
         with:
           repository: TinyTapeout/tt-support-tools
           path: tt
-          ref: tt10
+          ref: main
 
       - name: Install tt-support-tools dependencies
         shell: bash

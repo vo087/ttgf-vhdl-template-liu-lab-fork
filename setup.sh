@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Load VS Code editor
-module load prog/vscode/1.85.2
+module load prog/vscode/1.134.0
 
 # Load Python
-module load prog/anaconda3/2024.10.1
+module load prog/anaconda3/2025.12.2
 
 # Install cocotb for running the testbench
 python -m pip install cocotb
